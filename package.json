@@ -1,11 +1,11 @@
 {
 	"name": "ampscript",
 	"displayName": "MCFS [AMPScript]",
-	"description": "This extension allows you to connect Visual Studio Code directly to your MC Account, enables syntax highlighting for AMPScript, has built-in documentation and much more",
+	"description": "Connect VSCode directly to your Marketing Cloud Account, enable syntax highlighting for AMPScript, get built-in AMPScript documentation and much more",
 	"version": "3.0.1",
 	"publisher": "sergey-agadzhanov",
 	"engines": {
-		"vscode": "^1.32.0"
+		"vscode": "^1.54.0"
 	},
 	"categories": [
 		"Programming Languages"
@@ -72,26 +72,53 @@
 			{
 				"command": "mcfs.dataextension.filter",
 				"title": "Filter a dataextension",
-				"category": "MCFS"
+				"category": "MCFS",
+				"icon": {
+					"light": "images/filter.icon.svg",
+					"dark": "images/filter.icon.svg"
+				}
 			},
 			{
 				"command": "mcfs.query.run",
 				"title": "Run SQL Query",
-				"category": "MCFS"
+				"category": "MCFS",
+				"icon": {
+					"light": "images/run.icon.svg",
+					"dark": "images/run.icon.svg"
+				}
 			}
 		],
 		"menus": {
 			"commandPalette": [
 				{
 					"command": "mcfs.dataextension.filter",
-					"when": "resourceExtname == .csv"
+					"when": "resourceExtname == .csv && resourceScheme == mcfs"
 				},
 				{
 					"command": "mcfs.query.run",
-					"when": "resourceExtname == .sql"
+					"when": "resourceExtname == .sql && resourceScheme == mcfs"
 				}
-			]
+			],
+			"editor/title": [
+				{
+					"when": "resourceExtname == .csv && resourceScheme == mcfs",
+					"command": "mcfs.dataextension.filter",
+					"group": "navigation"
+				},
+				{
+					"when": "resourceExtname == .sql && resourceScheme == mcfs",
+					"command": "mcfs.query.run",
+					"group": "navigation"
+				}
+			  ]
 		},
+		"viewsWelcome": [
+			{
+				"view": "explorer",
+				"contents": "Open MCFS connection manager and connect directly to your Salesforce Marketing Cloud account \n[Connect to SFMC](command:mcfs.open)",
+				"when": ""
+			}
+		],
 		"configuration": {
 			"title": "MCFS Configuration",
 			"properties": {
@@ -142,6 +169,7 @@
 		"axios": "^0.21.1",
 		"jsep": "^0.4.0",
 		"papaparse": "^5.3.0",
+		"update": "^0.7.4",
 		"vscode-extension-telemetry": "^0.1.7",
 		"xml2js": "^0.4.23"
 	}

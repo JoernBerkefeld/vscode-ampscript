@@ -12,7 +12,7 @@ export class Utils {
 	public readonly telemetry: TelemetryReporter;
 	private telementryEventLog: Array<string> = [];
 
-	public static readonly extensionId = "sergey-agadzhanov.AMPscript";
+	public static readonly extensionId = "mcfs";
 	public static get extensionVersion(): string {
 		return vscode.extensions.getExtension(Utils.extensionId)?.packageJSON?.version || "";
 	}
@@ -35,13 +35,14 @@ export class Utils {
 		);
 	}
 
-	sendTelemetryEvent(event: string, deduplicate: boolean = false) {
+	sendTelemetryEvent(event: string, deduplicate: boolean = false, isError = false) {
 		if (deduplicate) {
 			if (this.telementryEventLog.includes(event)) return;
 			else this.telementryEventLog.push(event);
 		}
 
-		this.telemetry.sendTelemetryEvent(event);
+		if (isError) this.telemetry.sendTelemetryErrorEvent(event);
+		else this.telemetry.sendTelemetryEvent(event);
 	}
 
 	showInformationMessage(message: string) {

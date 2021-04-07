@@ -32,7 +32,8 @@ export class SqlQueriesFolderManager extends FolderManager {
 		);
 
 		if (!hasTokenScopes) {
-			throw new Error('Additional permissions required for this function: AUTOMATION: Automations (Read, Write, Execute). Please update your installed package and restart VSCode');
+			Utils.getInstance().sendTelemetryEvent("error.manager-sqlqueries.missing_api_scope", true, true);
+			throw new Error('Additional permissions are required for this function: AUTOMATION: Automations (Read, Write, Execute). Please update your installed package and restart VSCode');
 		}
 
 		const config: AxiosRequestConfig = {
@@ -136,7 +137,7 @@ export class SqlQueriesFolderManager extends FolderManager {
 			Utils.getInstance().showErrorMessage("Query wait timeout");
 		}
 
-		return assetMetadata?.["targetId"];
+		return;
 	}
 
 
