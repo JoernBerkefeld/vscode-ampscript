@@ -110,14 +110,50 @@ export async function activate(context: vscode.ExtensionContext) {
 			}
 		}, 5000);
 
-		enableSnippets(context.extensionPath);
+		// Force the correct language id on mcfs:// documents so the SFMC Language Service
+		// (extension dependency) provides AMPScript/SSJS intelligence on virtual files.
+		const applyMcfsLanguage = (doc: vscode.TextDocument) => {
+			try {
+				if (doc.uri.scheme !== 'mcfs') {
+					return;
+				}
+
+				const segments = doc.uri.path.split('/');
+				const fileName = (segments[segments.length - 1] || '').toLowerCase();
+
+				let langId: string | undefined;
+
+				// Automation Script activities are stored as script.js and wrap SSJS/SFMC content
+				if (fileName === 'script.js') {
+					langId = 'sfmc';
+				}
+				// AMPScript assets use .amp / .ampscript extensions
+				else if (fileName.endsWith('.amp') || fileName.endsWith('.ampscript')) {
+					langId = 'ampscript';
+				}
+
+				// Leave built-in languages (.sql/.csv/.json/.txt) untouched, and skip redundant calls
+				if (langId !== undefined && doc.languageId !== langId) {
+					// Swallow the returned Thenable's rejection so it never becomes an unhandled rejection
+					vscode.languages.setTextDocumentLanguage(doc, langId).then(undefined, (err) => {
+						Utils.getInstance().log(`Could not set language for ${doc.uri.toString()}: ${err}`);
+					});
+				}
+			}
+			catch {
+				// A single problematic document must not break language forcing for the rest
+			}
+		};
+
+		context.subscriptions.push(vscode.workspace.onDidOpenTextDocument(applyMcfsLanguage));
+		vscode.workspace.textDocuments.forEach(applyMcfsLanguage);
 	}
 	catch (err) {
 		Utils.getInstance().showErrorMessage(err);
 	}
 }
 
-export function deactivate() {
+export function deactivate(): void {
 	Utils.getInstance().telemetry.dispose();
 }
 
@@ -140,29 +176,6 @@ function connect(connection: Connection): void {
 	
 	vscode.commands.executeCommand('workbench.view.explorer');
 	Utils.getInstance().showInformationMessage(`Connected to ${connection.account_id}. Open File Explorer...`);
-}
-
-function enableSnippets(extensionPath: string) {
-	Utils.getInstance().readJSON(extensionPath + '/syntaxes/snippets.json').then(snippets => {
-		vscode.languages.registerHoverProvider('AMPscript', {
-			provideHover(document, position, token) {
-				let word = document.getText(document.getWordRangeAtPosition(position));
-
-				if (!word || word.length > 100) {
-					return null;
-				}
-
-				word = word.toLowerCase();
-
-				if (snippets[word] !== undefined && snippets[word].description) {
-					return {
-						contents: [snippets[word].description]
-					};
-				}
-				return null;
-			}
-		});
-	});
 }
 
 function showPromoBanner(connectionManagerCallback: () => void) {

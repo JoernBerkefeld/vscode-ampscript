@@ -1,8 +1,8 @@
 {
 	"name": "ampscript",
 	"displayName": "MCFS [AMPScript]",
-	"description": "Connect VSCode directly to your Marketing Cloud Account, enable syntax highlighting for AMPScript, get built-in AMPScript documentation and much more",
-	"version": "3.0.6",
+	"description": "Connect VS Code directly to your Marketing Cloud account and edit Content Builder assets, SQL queries, script activities and data extensions through a virtual filesystem. AMPScript and SSJS language support is provided by the SFMC Language Service extension.",
+	"version": "3.0.7",
 	"publisher": "sergey-agadzhanov",
 	"engines": {
 		"vscode": "^1.54.0"
@@ -23,6 +23,9 @@
 		"mcfs"
 	],
 	"main": "./out/src/extension",
+	"extensionDependencies": [
+		"joernberkefeld.sfmc-language"
+	],
 	"scripts": {
 		"vscode:prepublish": "npm run compile; npm run connectionmanager",
 		"connectionmanager": "cd ./src/connection-manager && npm run build",
@@ -33,36 +36,10 @@
 	"activationEvents": [
 		"onCommand:mcfs.open",
 		"onFileSystem:mcfs",
-		"onLanguage:AMPscript"
+		"onLanguage:ampscript",
+		"onLanguage:sfmc"
 	],
 	"contributes": {
-		"languages": [
-			{
-				"id": "AMPscript",
-				"aliases": [
-					"AMPscript",
-					"ampscript"
-				],
-				"extensions": [
-					".amp",
-					".ampscript"
-				],
-				"configuration": "./syntaxes/language-configuration.json"
-			}
-		],
-		"grammars": [
-			{
-				"language": "AMPscript",
-				"scopeName": "source.amp",
-				"path": "./syntaxes/ampscript.tmLanguage.json"
-			}
-		],
-		"snippets": [
-			{
-				"language": "AMPscript",
-				"path": "./syntaxes/snippets.json"
-			}
-		],
 		"commands": [
 			{
 				"command": "mcfs.open",
