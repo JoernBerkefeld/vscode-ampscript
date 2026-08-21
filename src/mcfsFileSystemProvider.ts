@@ -62,7 +62,7 @@ export class MCFS implements vscode.FileSystemProvider {
 		}
 	}
 
-	async writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean, overwrite: boolean }): Promise<any> {
+	async writeFile(uri: vscode.Uri, content: Uint8Array, _options: { create: boolean, overwrite: boolean }): Promise<any> {
 		const fmUri = new FolderManagerUri(uri);
 
 		if (!FolderController.getInstance().hasManager(fmUri)) {
@@ -81,15 +81,15 @@ export class MCFS implements vscode.FileSystemProvider {
 
 	/* NOT IMPLEMENTED */
 
-	createDirectory(uri: vscode.Uri): void {
+	createDirectory(_uri: vscode.Uri): void {
 		throw new Error("CreateDirectory not implemented yet");
 	}
 
-	rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean }): void {
+	rename(_oldUri: vscode.Uri, _newUri: vscode.Uri, _options: { overwrite: boolean }): void {
 		throw new Error("Rename not implemented yet");
 	}
 
-	delete(uri: vscode.Uri): void {
+	delete(_uri: vscode.Uri): void {
 		throw new Error("Delete not implemented yet");
 	}
 
@@ -101,7 +101,7 @@ export class MCFS implements vscode.FileSystemProvider {
 
 	watch(_resource: vscode.Uri): vscode.Disposable {
 		// ignore, fires for all changes...
-		return new vscode.Disposable(() => { });
+		return new vscode.Disposable(() => { /* no-op: MCFS does not emit file-watch events */ });
 	}
 
 	private _fireSoon(...events: vscode.FileChangeEvent[]): void {

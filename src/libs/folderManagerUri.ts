@@ -28,7 +28,7 @@ export class FolderManagerUri {
 		this.globalPath = this.mountPath + this.localPath;
 	}
 
-	getChildPath(childDirectoryName: string) {
+	getChildPath(childDirectoryName: string): string {
 		return this.globalPath + (this.globalPath.endsWith('/') ? '' : '/') + childDirectoryName;
 	}
 

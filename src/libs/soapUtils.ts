@@ -1,6 +1,7 @@
 import * as JSEP from "jsep";
 
 export class SoapUtils {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- obj is an arbitrary SOAP response object typed as any
 	static getProp(obj: any, path: string, shouldReturnArray = false): any {
 		let result: any = obj;
 
@@ -23,14 +24,17 @@ export class SoapUtils {
 		return result;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- obj is an arbitrary SOAP response object typed as any
 	static getStrProp(obj: any, path: string): string {
 		return SoapUtils.getProp(obj, path, false) || "";
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- obj is an arbitrary SOAP response object typed as any
 	static getArrProp(obj: any, path: string): Array<any> {
 		return SoapUtils.getProp(obj, path, true) || [];
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- filter is an arbitrary SOAP filter object typed as any
 	static createRetrieveBody(objectType: string, properties: Array<string>, filter?: any): any {
 		const result: any = {
 			RetrieveRequestMsg: {
@@ -73,6 +77,7 @@ export class SoapUtils {
 		return result;
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- filter is an arbitrary SOAP filter object typed as any
 	static prepareSoapFilter(filter: any): any {
 		// Simple filter
 		if (filter?.SimpleOperator !== undefined) {
@@ -112,6 +117,7 @@ export class SoapFilterExpression {
 		return this.getFilter(this.expression);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- expression is an arbitrary JSEP expression node typed as any
 	getFilter(expression: any): any {
 		if (expression?.operator === undefined) {
 			return undefined;
@@ -133,6 +139,7 @@ export class SoapFilterExpression {
 	}
 
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- side is an arbitrary JSEP expression node typed as any
 	getFilterSide(side: any): any {
 		let name = "";
 

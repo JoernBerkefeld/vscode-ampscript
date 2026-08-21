@@ -29,6 +29,7 @@ export class APIException extends Error {
 	public data: string;
 	public readonly innerException: any;
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- innerException is an arbitrary caught error value typed as any
 	constructor(message: string, details: string, innerException?: any) {
 		super();
 		this.message = message;

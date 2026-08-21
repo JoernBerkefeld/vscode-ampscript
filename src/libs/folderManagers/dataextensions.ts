@@ -52,7 +52,8 @@ export class DataextensionFolderManager extends FolderManager {
 
 	/* Interface implementation */
 
-	getAssetDirectoryName(name: string, assetData: any): string {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- assetData is an arbitrary SFMC asset payload typed as any
+	getAssetDirectoryName(name: string, _assetData: any): string {
 		return `Ω 🟦  ${name}.dataext`;
 	}
 
@@ -145,7 +146,7 @@ export class DataextensionFolderManager extends FolderManager {
 		return;
 	}
 
-	async saveAsset(asset: Asset): Promise<void> {
+	async saveAsset(_asset: Asset): Promise<void> {
 		return;
 	}
 
@@ -181,7 +182,7 @@ export class DataextensionFolderManager extends FolderManager {
 		return content;
 	}
 
-	public async customActionFilter(fmUri: FolderManagerUri, content: string): Promise<string | undefined> {
+	public async customActionFilter(fmUri: FolderManagerUri, _content: string): Promise<string | undefined> {
 		const assetUri = fmUri.isAsset ? fmUri : fmUri.parent;
 
 		if (assetUri === undefined) {

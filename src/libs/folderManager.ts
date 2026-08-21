@@ -93,7 +93,8 @@ export abstract class FolderManager {
 	 * @param name - original name of the asset
 	 * @param assetData - raw asset data
 	 */
-	getAssetDirectoryName(name: string, assetData: any): string {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- assetData is an arbitrary SFMC asset payload typed as any
+	getAssetDirectoryName(name: string, _assetData: any): string {
 		return `Ω 🟦  ${name}.${this.constructor.name.toLowerCase()}`;
 	}
 

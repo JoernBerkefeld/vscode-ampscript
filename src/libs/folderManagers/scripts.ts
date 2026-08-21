@@ -86,7 +86,8 @@ export class ScriptsFolderManager extends FolderManager {
 		asset.content = JSON.stringify(assetData, null, 2);
 	}
 
-	getAssetDirectoryName(name: string, assetData: any): string {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- assetData is an arbitrary SFMC asset payload typed as any
+	getAssetDirectoryName(name: string, _assetData: any): string {
 		return `Ω 🟪  ${name}.script`;
 	}
 

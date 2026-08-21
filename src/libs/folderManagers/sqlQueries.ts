@@ -92,7 +92,8 @@ export class SqlQueriesFolderManager extends FolderManager {
 		asset.content = JSON.stringify(assetData, null, 2);
 	}
 
-	getAssetDirectoryName(name: string, assetData: any): string {
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- assetData is an arbitrary SFMC asset payload typed as any
+	getAssetDirectoryName(name: string, _assetData: any): string {
 		return `Ω 🟥  ${name}.query`;
 	}
 
@@ -102,7 +103,7 @@ export class SqlQueriesFolderManager extends FolderManager {
 
 	/* Support methods */
 
-	public async customActionRunQuery(fmUri: FolderManagerUri, content: string): Promise<string | undefined> {
+	public async customActionRunQuery(fmUri: FolderManagerUri, _content: string): Promise<string | undefined> {
 		const assetUri = fmUri.isAsset ? fmUri : fmUri.parent;
 
 		if (assetUri === undefined) return;

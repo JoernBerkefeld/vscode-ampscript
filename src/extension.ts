@@ -11,7 +11,7 @@ import { FolderController } from './libs/folderController';
 
 let isConnectionManagerOpened = false;
 
-export async function activate(context: vscode.ExtensionContext) {
+export async function activate(context: vscode.ExtensionContext): Promise<void> {
 	try {
 		context.subscriptions.push(Utils.getInstance().telemetry);
 		Utils.getInstance().sendTelemetryEvent("activated");
@@ -71,7 +71,7 @@ export async function activate(context: vscode.ExtensionContext) {
 
             registeredCommands.push(a.command);
 
-			context.subscriptions.push(vscode.commands.registerTextEditorCommand(a.command, async (textEditor: vscode.TextEditor, edit: vscode.TextEditorEdit, args: any[]) => {
+			context.subscriptions.push(vscode.commands.registerTextEditorCommand(a.command, async (textEditor: vscode.TextEditor, _edit: vscode.TextEditorEdit, _args: any[]) => {
 				Utils.getInstance().sendTelemetryEvent(`customaction-${a.command}`);
 
 				const uri = textEditor?.document?.uri;
@@ -85,7 +85,7 @@ export async function activate(context: vscode.ExtensionContext) {
 					location: vscode.ProgressLocation.Notification,
 					title: a.waitLabel,
 					cancellable: true
-				}, async (progress, token) => {
+				}, async (_progress, _token) => {
                     const result = await FolderController.getInstance().getManager(fmUri.mountFolderName)
                                     ?.customActions
                                     ?.find((c) => c.command == a.command)

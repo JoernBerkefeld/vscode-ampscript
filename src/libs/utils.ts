@@ -55,6 +55,7 @@ export class Utils {
 		vscode.window.showInformationMessage(message);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- err is an arbitrary caught error value typed as any
 	showErrorMessage(err: any, isModal = false): void {
 		const message = this.getErrorMessage(err);
 		this.logError(err);
@@ -63,6 +64,7 @@ export class Utils {
 		} as vscode.MessageOptions);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- err is an arbitrary caught error value typed as any
 	getErrorMessage(err: any): string {
 		let message = '';
 
@@ -81,6 +83,7 @@ export class Utils {
 		this.channel.appendLine(`${new Date().toISOString()} => ${message}`);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- err is an arbitrary caught error value typed as any
 	logError(err: any): void {
 		const message: string = this.getErrorMessage(err);
 
@@ -109,6 +112,7 @@ export class Utils {
 		return config?.get(section);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- value is an arbitrary config value typed as any
 	setConfig(section: string, value: any): void {
 		const config = vscode.workspace.getConfiguration('mcfs');
 
@@ -123,6 +127,7 @@ export class Utils {
 		}, 100);
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- value is an arbitrary config value typed as any
 	setConfigField(section: string, field: string, value: any): void {
 		const data = this.getConfig(section);
 		data[field] = value;

@@ -129,6 +129,7 @@ export class ContentBuilderFolderManager extends FolderManager {
 		}
 	}
 
+	// eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- assetData is an arbitrary SFMC asset payload typed as any
 	getAssetDirectoryName(name: string, assetData: any): string {
 		const subtype: AssetSubtype = assetData?.assetType?.id as AssetSubtype || AssetSubtype.UNKNOWN;
 		const type: AssetType = ContentBuilderFolderManager.getAssetTypeBySubtype(subtype);

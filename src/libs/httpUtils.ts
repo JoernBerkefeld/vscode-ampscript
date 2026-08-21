@@ -12,6 +12,7 @@ export class ApiRequestConfig {
     public baseURL = '';
     public headers: any = {};
 
+    // eslint-disable-next-line @typescript-eslint/explicit-module-boundary-types -- config is an arbitrary request config object typed as any
     public constructor(config: any){
         this.method = config.method;
         this.url = config.url;
