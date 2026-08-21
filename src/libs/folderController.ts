@@ -3,8 +3,9 @@
 import { CustomAction, FolderManager } from './folderManager';
 import { FolderManagerUri } from './folderManagerUri';
 import { Asset, AssetFile } from './asset';
-import { ContentBuilderFolderManager, AssetSubtype } from './folderManagers/contentBuilder';
+import { ContentBuilderFolderManager, AssetSubtype, ContentBuilderStandardTypes } from './folderManagers/contentBuilder';
 import { SqlQueriesFolderManager } from './folderManagers/sqlQueries';
+import { ScriptsFolderManager } from './folderManagers/scripts';
 import { DataextensionFolderManager } from './folderManagers/dataextensions';
 import { Utils } from './utils';
 
@@ -18,20 +19,13 @@ export class FolderController {
 		this.managers = new Map<string, FolderManager>();
 		this.fileExensions = new Set<string>();
 
-		this.addManager(new ContentBuilderFolderManager("Content Builder", [
-			AssetSubtype.TEMPLATE,
-			AssetSubtype.EMAIL_HTML,
-			AssetSubtype.EMAIL_TEMPLATEBASED,
-			AssetSubtype.EMAIL_TEXT,
-			AssetSubtype.BLOCK_CODESNIPPET,
-			AssetSubtype.BLOCK_FREEFORM,
-			AssetSubtype.BLOCK_TEXT,
-			AssetSubtype.BLOCK_HTML,
-			AssetSubtype.JSON_MESSAGE
-		], false));
-		this.addManager(new ContentBuilderFolderManager("Cloud Pages", [AssetSubtype.WEBPAGE], true));
+		this.addManager(new ContentBuilderFolderManager("Content Builder", false, ContentBuilderStandardTypes, false));
+		this.addManager(new ContentBuilderFolderManager("Content Builder: Shared Content", true, ContentBuilderStandardTypes, false));
+		this.addManager(new ContentBuilderFolderManager("Cloud Pages", false, [AssetSubtype.WEBPAGE], true));
 		this.addManager(new SqlQueriesFolderManager());
-		this.addManager(new DataextensionFolderManager("Dataextensions", false));
+		this.addManager(new ScriptsFolderManager());
+		this.addManager(new DataextensionFolderManager("Dataextensions", false, "dataextension_default", "dataextension"));
+		this.addManager(new DataextensionFolderManager("Dataextensions: Shared", false, "shared_dataextension_default", "shared_dataextension"));
 	}
 
 	static getInstance(): FolderController {
@@ -59,6 +53,10 @@ export class FolderController {
 	hasManager(uri: FolderManagerUri): boolean {
 		return uri.mountPath === '' || this.managers.get(uri.mountFolderName) !== undefined;
 	}
+
+    getManager(mountFolderName: string): FolderManager | undefined {
+        return this.managers.get(mountFolderName);
+    }
 
 	hasFileExtension(extension: string): boolean {
 		return this.fileExensions.has(extension.toLowerCase());

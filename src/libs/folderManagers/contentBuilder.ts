@@ -1,8 +1,8 @@
-import { AxiosRequestConfig } from 'axios';
 import { Asset, AssetFile } from '../asset';
 import { ConnectionController } from '../connectionController';
 import { FolderManager, Directory } from '../folderManager';
 import { FolderManagerUri } from '../folderManagerUri';
+import { ApiRequestConfig } from '../httpUtils';
 
 export enum AssetType {
 	UNKNOWN = 0,
@@ -27,6 +27,17 @@ export enum AssetSubtype {
 	JSON_MESSAGE = 230
 }
 
+export const ContentBuilderStandardTypes = [
+	AssetSubtype.TEMPLATE,
+	AssetSubtype.EMAIL_HTML,
+	AssetSubtype.EMAIL_TEMPLATEBASED,
+	AssetSubtype.EMAIL_TEXT,
+	AssetSubtype.BLOCK_CODESNIPPET,
+	AssetSubtype.BLOCK_FREEFORM,
+	AssetSubtype.BLOCK_TEXT,
+	AssetSubtype.BLOCK_HTML,
+	AssetSubtype.JSON_MESSAGE
+];
 
 export class ContentBuilderFolderManager extends FolderManager {
 	readonly mountFolderName: string;
@@ -34,13 +45,20 @@ export class ContentBuilderFolderManager extends FolderManager {
 	private directoriesCache: Map<string, number>;
 	private readonly assetSubtypesFilter: Array<AssetSubtype>;
 	private readonly readOnlyRootFolder: boolean;
+	private readonly isSharedFolderScope: boolean;
 
-	constructor(mountFolderName: string, assetSubtypesFilter: Array<AssetSubtype>, readOnlyRootFolder: boolean) {
+	constructor(
+		mountFolderName: string, 
+		isSharedFolderScope = false,
+		assetSubtypesFilter: Array<AssetSubtype>, 
+		readOnlyRootFolder: boolean
+	) {
 		super();
 		this.directoriesCache = new Map<string, number>();
 		this.mountFolderName = mountFolderName;
 		this.assetSubtypesFilter = assetSubtypesFilter;
 		this.readOnlyRootFolder = readOnlyRootFolder;
+		this.isSharedFolderScope = isSharedFolderScope;
 	}
 
 	/* Interface implementation */
@@ -75,11 +93,11 @@ export class ContentBuilderFolderManager extends FolderManager {
 		}
 
 
-		const config: AxiosRequestConfig = {
+		const config = new ApiRequestConfig({
 			method: 'patch',
 			url: `/asset/v1/content/assets/${assetData.id}`,
 			data: data
-		};
+		});
 
 		await ConnectionController.getInstance().restRequest(asset.connectionId, config);
 	}
@@ -181,7 +199,7 @@ export class ContentBuilderFolderManager extends FolderManager {
 	}
 
 	private async getAssetsByDirectoryId(uri: FolderManagerUri, directoryId: number): Promise<Array<Asset>> {
-		const config: AxiosRequestConfig = {
+		const config = new ApiRequestConfig({
 			method: 'post',
 			url: '/asset/v1/content/assets/query',
 			data: {
@@ -207,7 +225,7 @@ export class ContentBuilderFolderManager extends FolderManager {
 					}
 				}
 			}
-		};
+		});
 
 		const data: any = await ConnectionController.getInstance().restRequest(uri.connectionId, config);
 
@@ -357,14 +375,17 @@ export class ContentBuilderFolderManager extends FolderManager {
 	}
 
 	private async getSubdirectoriesByDirectoryId(uri: FolderManagerUri, directoryId: number): Promise<Array<Directory>> {
-		const config: AxiosRequestConfig = {
+		const scope = this.isSharedFolderScope ? "Shared" : "Ours";
+		
+		const config = new ApiRequestConfig({
 			method: 'get',
 			url: '/asset/v1/content/categories/',
 			params: {
 				'$pagesize': '100',
-				'$filter': `parentId eq ${directoryId}`
+				'$filter': `parentId eq ${directoryId}`,
+				'scope': scope
 			}
-		};
+		});
 
 		const data: any = await ConnectionController.getInstance().restRequest(uri.connectionId, config);
 

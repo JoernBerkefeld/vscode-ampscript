@@ -7,12 +7,12 @@ export class Utils {
 
 	private static instance: Utils | null = null;
 	private channel: vscode.OutputChannel;
-	private isConfigUpdated: boolean = true;
+	private isConfigUpdated = true;
 
 	public readonly telemetry: TelemetryReporter;
 	private telementryEventLog: Array<string> = [];
 
-	public static readonly extensionId = "mcfs";
+	public static readonly extensionId = "sergey-agadzhanov.AMPscript";
 	public static get extensionVersion(): string {
 		return vscode.extensions.getExtension(Utils.extensionId)?.packageJSON?.version || "";
 	}
@@ -29,23 +29,28 @@ export class Utils {
 	constructor() {
 		this.channel = vscode.window.createOutputChannel('MCFS');
 		this.telemetry = new TelemetryReporter(
-			Utils.extensionId,
+			"mcfs",
 			Utils.extensionVersion,
 			Buffer.from("OTc1M2Y5OTAtOTY0Yy00M2Q2LWFiYTEtYjZiMmQyZmVlZDNi", "base64").toString("utf-8")
 		);
 	}
 
-	sendTelemetryEvent(event: string, deduplicate: boolean = false, isError = false) {
-		if (deduplicate) {
-			if (this.telementryEventLog.includes(event)) return;
-			else this.telementryEventLog.push(event);
-		}
-
-		if (isError) this.telemetry.sendTelemetryErrorEvent(event);
-		else this.telemetry.sendTelemetryEvent(event);
+	sendTelemetryEvent(event: string, deduplicate = false, isError = false): void {
+        try{
+            if (deduplicate) {
+                if (this.telementryEventLog.includes(event)) return;
+                else this.telementryEventLog.push(event);
+            }
+    
+            if (isError) this.telemetry.sendTelemetryErrorEvent(event);
+            else this.telemetry.sendTelemetryEvent(event);
+        }
+        catch(err: any){
+            this.logError(err)
+        }
 	}
 
-	showInformationMessage(message: string) {
+	showInformationMessage(message: string): void {
 		this.log(message)
 		vscode.window.showInformationMessage(message);
 	}
@@ -72,11 +77,11 @@ export class Utils {
 		return message;
 	}
 
-	log(message: string) {
+	log(message: string): void {
 		this.channel.appendLine(`${new Date().toISOString()} => ${message}`);
 	}
 
-	logError(err: any) {
+	logError(err: any): void {
 		const message: string = this.getErrorMessage(err);
 
 		this.log('ERROR ********************************************');
@@ -104,7 +109,7 @@ export class Utils {
 		return config?.get(section);
 	}
 
-	setConfig(section: string, value: any) {
+	setConfig(section: string, value: any): void {
 		const config = vscode.workspace.getConfiguration('mcfs');
 
 		const updateInterval = setInterval(_ => {
@@ -118,18 +123,20 @@ export class Utils {
 		}, 100);
 	}
 
-	setConfigField(section: string, field: string, value: any) {
+	setConfigField(section: string, field: string, value: any): void {
 		const data = this.getConfig(section);
 		data[field] = value;
 		this.setConfig(section, data);
 	}
 
-	delay(time: number) {
+	delay(time: number): any {
 		return new Promise((resolve) => {
 			setTimeout(() => resolve(time), time);
 		});
 	}
 }
+
+
 
 export class WebPanelMessage {
 	public action = '';
@@ -187,7 +194,7 @@ export class WebPanel {
 		});
 	}
 
-	public close() {
+	public close(): void {
 		this.panel?.dispose();
 	}
 

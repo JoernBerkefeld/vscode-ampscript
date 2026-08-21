@@ -1,41 +1,36 @@
-# MCFS [AMPScript] v3.0.1
+# MCFS [AMPScript] v3.0.6
 
 Greetings Marketing Cloud Experts! You've just updated (or installed) an **AMPscript [MCFS]** extension for Visual Studio Code. This version brings some really cool new features, that I would like to share with you. Share your ideas using [this form](https://docs.google.com/forms/d/e/1FAIpQLSc8NCJcqTxMIIJ5J1pWKTnPY2JewvTS8GU6b9-Lvhdze1N4RA/viewform?usp=sf_link), leave your feedback on the [Extension Page](https://marketplace.visualstudio.com/items?itemName=sergey-agadzhanov.AMPscript) or add a star on my [github repository](https://github.com/Bizcuit/vscode-ampscript).
 
 ```diff
 + === NEW FEATURES ===
 
-+ Edit and Run SQL Queries (special thanks go to Douglas Midgley)
-+ Filter and Edit data in Dataextensions (work with DEs like with CSV files)
-+ Get dataextension metadata
-
-- IMPORTANT: Additional API permissions are required for the new features to work. 
-- Add the following permissions to your MCFS Installed package and restart VS Code:
-
-+ === ADDITIONAL MC PERMISSIONS ===
-+ AUTOMATION: Automations (Read, Write, Execute)
-+ DATA: Data Extensions (Read, Write)
++ Extension now works with Corporate Proxies
++ Support for shared Dataextensions (you need to be connected to Ent BU)
 ```
 
 ### To run an SQL query
-* Open "Connection Manager": press F1 or 'CMD+Shift+P' (Mac) or 'CTRL+Shift+P' (Windows) and start typing 'MCFS', find 'MCFS Connecton Manager' and then hit Enter
-* Connect to your MC Account, go to File Explorer and open your BU folder
-* Open "SQL Queries folder", find your query asset and open a "query.sql" file
-* Open the "Command Pallet": press F1 or 'CMD+Shift+P' (Mac) or 'CTRL+Shift+P' (Windows) and start typing 'MCFS'
-* Select "MCFS: Run SQL Query" and hit Enter
+* Connect to your MC account
+* Find your SQL Query asset in the "SQL Queries" folder and open a "query.sql" file
+* Click a "Run SQL Query" button located in the top right corner of the editor (or run a "MCFS: Run SQL Query" command from the Command Pallet)
+
+![SQL Queries](https://raw.githubusercontent.com/Bizcuit/vscode-ampscript/master/images/mcfs_runquery.jpg)
+
 
 ### To filter a Dataextension
-* Open "Connection Manager": press F1 or 'CMD+Shift+P' (Mac) or 'CTRL+Shift+P' (Windows) and start typing 'MCFS', find 'MCFS Connecton Manager' and then hit Enter
-* Connect to your MC Account, go to File Explorer and open your BU folder
-* Open "Dataextensions", find your dataextension asset and open "rows.csv" file
-* Open the "Command Pallet": press F1 or 'CMD+Shift+P' (Mac) or 'CTRL+Shift+P' (Windows) and start typing 'MCFS'
-* Select "MCFS: Filter a Dataextension" and hit Enter. 
+* Connect to your MC account
+* Find your Dataextension asset in the "Dataextensions" folder and open a "rows.csv" file
+* Click a "Filter a Dataextension" button located in the top right corner of the editor (or run a "MCFS: Filter a Dataextension" command from the Command Pallet)
 * Set the filter and hit enter
 * Filter example: OrderID = 'ORD2123F2' AND SubscriberKey = 'ABC'
+
+![Dataextensions](https://raw.githubusercontent.com/Bizcuit/vscode-ampscript/master/images/mcfs_filterde.jpg)
+
 
 ## SFMC DevTools published
 
 We have been talking about this behind the scenes already for quite some time but on March 26 the [SFMC DevTools](https://bit.ly/mc-devtools) were finally open-sourced. It allows you to up-/download all kinds of metadata, run mass-deployments to multiple BUs and on top it can be integrated into your IDE or CI/CD solution. And here comes the best part: We are looking into the possibility of integrating it into this VSCode extension.
+
 
 # Direct connection to Marketing Cloud
 
