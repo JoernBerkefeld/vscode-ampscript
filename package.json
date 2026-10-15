@@ -2,7 +2,7 @@
 	"name": "ampscript",
 	"displayName": "MCFS [AMPScript]",
 	"description": "Connect VS Code directly to your Marketing Cloud account and edit Content Builder assets, SQL queries, script activities and data extensions through a virtual filesystem. AMPScript and SSJS language support is provided by the SFMC Language Service extension.",
-	"version": "3.0.7",
+	"version": "4.0.0",
 	"publisher": "sergey-agadzhanov",
 	"engines": {
 		"vscode": "^1.54.0"

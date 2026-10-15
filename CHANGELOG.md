@@ -3,7 +3,7 @@ All notable changes to the "AMPScript" extension will be documented in this file
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
-## [3.0.7] - 2026-08-21
+## [4.0.0] - 2026-08-21
 ### Changed
 - Language support (syntax highlighting, completion, hover, diagnostics, formatting) is now provided by the SFMC Language Service extension (added as an extension dependency); removed the bundled AMPScript grammar, language configuration, and snippets.
 - AMPScript documents on the MCFS virtual filesystem are now mapped to the `ampscript` language, and Automation Script activities (`script.js`, which contain `<script runat="server">`-wrapped SSJS/SFMC content) to the `sfmc` language, so full language intelligence works on mcfs:// documents.
